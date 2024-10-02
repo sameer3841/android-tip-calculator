@@ -29,10 +29,12 @@ class MainActivity : AppCompatActivity() {
         val total10Value = findViewById<TextView>(R.id.total10Val)
         val total25Value = findViewById<TextView>(R.id.totalSeekVal)
 
+        val customTip = findViewById<TextView>(R.id.customTip)
+
 
         billEditText.setOnKeyListener(View.OnKeyListener {v, keyCode, event ->
             if(keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP){
-                update(billEditText, tipSlider, tip1Value, tip10Value, tip25Value, total1Value, total10Value, total25Value)
+                update(billEditText, tipSlider, tip1Value, tip10Value, tip25Value, total1Value, total10Value, total25Value, customTip)
                 Log.i("Sameer","pressed Enter")
                 return@OnKeyListener true
             }
@@ -42,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         tipSlider.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 Log.i("Sameer","changed Tip Percent")
-                update(billEditText, tipSlider, tip1Value, tip10Value, tip25Value, total1Value, total10Value, total25Value)
+                update(billEditText, tipSlider, tip1Value, tip10Value, tip25Value, total1Value, total10Value, total25Value, customTip)
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
@@ -61,7 +63,8 @@ class MainActivity : AppCompatActivity() {
         tip25Value: TextView,
         total1Value: TextView,
         total10Value: TextView,
-        total25Value: TextView
+        total25Value: TextView,
+        customTip : TextView
     ){
         try {
             val billAmount = parseNum(billEditText)
@@ -77,6 +80,7 @@ class MainActivity : AppCompatActivity() {
             val total25 = billAmount + tip25
 
             // TextViews
+
             tip1Value.text = String.format("%.2f", tip1)
             tip10Value.text = String.format("%.2f", tip10)
             tip25Value.text = String.format("%.2f", tip25)
@@ -84,6 +88,8 @@ class MainActivity : AppCompatActivity() {
             total1Value.text = String.format("%.2f", total1)
             total10Value.text = String.format("%.2f", total10)
             total25Value.text = String.format("%.2f", total25)
+
+            customTip.text = String.format("%.2f %", tipSlider.progress)
 
         } catch (e: Exception) {
             Toast.makeText(this, "Please enter a valid number", Toast.LENGTH_SHORT).show()
